@@ -303,6 +303,7 @@ class FastLanguageModel(FastLlamaModel):
                 token = token,
                 revision = revision,
                 is_trainable = True,
+                config = peft_config,
             )
             # Patch it as well!
             model = dispatch_model.patch_peft_model(model, use_gradient_checkpointing)
