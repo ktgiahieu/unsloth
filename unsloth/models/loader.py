@@ -123,6 +123,7 @@ class FastLanguageModel(FastLlamaModel):
     @staticmethod
     def from_pretrained(
         model_name                 = "unsloth/llama-3-8b-bnb-4bit",
+        use_taia                   = False,
         max_seq_length             = None,
         dtype                      = None,
         load_in_4bit               = True,
@@ -159,7 +160,9 @@ class FastLanguageModel(FastLlamaModel):
             autoconfig_error = str(autoconfig_error)
             is_model = False
         try:
-            peft_config = PeftConfig .from_pretrained(model_name, token = token, revision = revision)
+            peft_config = PeftConfig.from_pretrained(model_name, token = token, revision = revision)
+            if use_taia:
+                peft_config.target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"]
             is_peft = True
         except Exception as peft_error:
             peft_error = str(peft_error)
